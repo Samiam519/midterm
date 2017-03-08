@@ -12,6 +12,7 @@ float xDir, yDir;
 float LHandX, LHandY;
 float RHandX, RHandY;
 boolean justDied;
+int justDiedMusic;
 int deathCounter;
 int timeSinceLastNewBall;
 int timeSinceLastLeftTouch;
@@ -22,6 +23,7 @@ ArrayList<newCircle> circles = new ArrayList<newCircle>();
 FWorld world;
 SoundFile circus;
 SoundFile powerDown;
+SoundFile mario;
 
 public void setup() {
   size(1200, 800);
@@ -41,6 +43,7 @@ public void setup() {
   highscore = 0;
   timeSinceLastLeftTouch = 0;
   timeSinceLastRightTouch = 0;
+  justDiedMusic = 0;
   
   Fisica.init(this);
   world = new FWorld();
@@ -53,6 +56,7 @@ public void setup() {
   circus = new SoundFile(this, "8bitcircus2.wav");
   circus.loop();
   powerDown = new SoundFile(this, "powerdown.wav");
+  mario = new SoundFile(this, "mario.mp3");
 }
 
 public void draw() {
@@ -62,18 +66,22 @@ public void draw() {
   timeSinceLastNewBall++;
   timeSinceLastLeftTouch++;
   timeSinceLastRightTouch++;
-  //score++;
      if (justDied) {
         background(255, 0, 0);
         deathCounter++;
         circus.amp(0.0);
-        powerDown.play();
+        //powerDown.play();
+        if(justDiedMusic == 1){
+          mario.play();
+          justDiedMusic = 0;
+        }
+        //mario.play();
         if(score > highscore){
            highscore = score; 
         }
         score = 0;
         }
-    if (deathCounter >= 60){
+    if (deathCounter >= 245){
         circus.amp(1.0);
         justDied = false;
         deathCounter = 0;
@@ -94,6 +102,7 @@ public void draw() {
       //check death
       if(ball.deathCount == 1){
          justDied = true;
+         justDiedMusic++;
       }
   }
   
