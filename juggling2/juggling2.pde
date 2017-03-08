@@ -1,3 +1,4 @@
+import processing.sound.*;
 import fisica.*;
 import de.voidplus.leapmotion.*;
 
@@ -17,9 +18,10 @@ int timeSinceLastLeftTouch;
 int timeSinceLastRightTouch;
 int score;
 int highscore;
-
 ArrayList<newCircle> circles = new ArrayList<newCircle>(); 
 FWorld world;
+SoundFile circus;
+SoundFile powerDown;
 
 public void setup() {
   size(1200, 800);
@@ -47,6 +49,10 @@ public void setup() {
   newCircle c = new newCircle(30);
   circles.add(c);
   world.add(c);
+  
+  circus = new SoundFile(this, "8bitcircus2.wav");
+  circus.loop();
+  powerDown = new SoundFile(this, "powerdown.wav");
 }
 
 public void draw() {
@@ -60,12 +66,15 @@ public void draw() {
      if (justDied) {
         background(255, 0, 0);
         deathCounter++;
+        circus.amp(0.0);
+        powerDown.play();
         if(score > highscore){
            highscore = score; 
         }
         score = 0;
         }
     if (deathCounter >= 60){
+        circus.amp(1.0);
         justDied = false;
         deathCounter = 0;
         }
