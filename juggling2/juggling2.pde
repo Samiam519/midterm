@@ -20,6 +20,8 @@ int timeSinceLastRightTouch;
 int score;
 int highscore;
 ArrayList<newCircle> circles = new ArrayList<newCircle>(); 
+FCircle[] LeftHand = new FCircle[5];
+FCircle[] RightHand = new FCircle[5];;
 FWorld world;
 SoundFile circus;
 SoundFile powerDown;
@@ -52,6 +54,17 @@ public void setup() {
   newCircle c = new newCircle(30);
   circles.add(c);
   world.add(c);
+  
+  for(int i = 0; i < 5; i++){
+     FCircle finger = new FCircle(30);
+     LeftHand[i] = finger;
+     world.add(finger);
+  }
+  for(int i = 0; i < 5; i++){
+     FCircle finger = new FCircle(30);
+     RightHand[i] = finger;
+     world.add(finger);
+  }
   
   circus = new SoundFile(this, "8bitcircus2.wav");
   circus.loop();
@@ -114,6 +127,7 @@ public void draw() {
           //println("right hand speed: " + RHandSpeed);
           for(Finger finger : hand.getFingers()){
              PVector fingerPos = finger.getPosition();
+             RightHand[finger.getType()].setPosition(fingerPos.x, fingerPos.y);
              fill(0,255,255);
              ellipse(fingerPos.x, fingerPos.y, 10, 10);
              //FCircle fingerTip = new FCircle(10);
@@ -150,6 +164,7 @@ public void draw() {
              //println("left hand speed:   " + LHandSpeed);
              for(Finger finger : hand.getFingers()){
                  PVector fingerPos = finger.getPosition();
+                 LeftHand[finger.getType()].setPosition(fingerPos.x, fingerPos.y);
                  fill(0,255,255);
                  ellipse(fingerPos.x, fingerPos.y, 10, 10);
                  //make fingers interact with ball
